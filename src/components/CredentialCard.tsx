@@ -36,7 +36,7 @@ export default function CredentialCard({
             <button
               type="button"
               onClick={onViewCertificate}
-              className="rounded-md border border-text-low/30 px-3 py-1.5 text-text-high transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
+              className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-md border border-text-low/30 px-3 text-text-high transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
             >
               View certificate
             </button>
@@ -46,7 +46,7 @@ export default function CredentialCard({
               href={verifyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-md border border-text-low/30 px-3 py-1.5 text-text-high transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
+              className="inline-flex min-h-11 items-center justify-center rounded-md border border-text-low/30 px-3 text-text-high transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
             >
               Verify online ↗
             </a>
