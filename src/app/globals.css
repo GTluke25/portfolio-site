@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  /* Canvas / surfaces */
+  --color-canvas: #0d0d0f;
+  --color-surface: #17171a;
+
+  /* Accent — the one bold move, use sparingly */
+  --color-accent: #ff6a1a;
+
+  /* Text */
+  --color-text-high: #ededed;
+  --color-text-low: #8a8a90;
+}
+
+@theme inline {
+  --color-canvas: var(--color-canvas);
+  --color-surface: var(--color-surface);
+  --color-accent: var(--color-accent);
+  --color-text-high: var(--color-text-high);
+  --color-text-low: var(--color-text-low);
+
+  --font-display: var(--font-archivo-black), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-text-high);
+}
