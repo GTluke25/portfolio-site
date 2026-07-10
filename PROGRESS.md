@@ -26,18 +26,18 @@ enough to actively use for pitching website sales in person and via QR code.
 
 ### Phase 1 — Foundation
 - [x] Next.js + TypeScript + Tailwind project scaffolded
-- [ ] Vercel project connected, deploys automatically on push
+- [x] Vercel project connected, deploys automatically on push
 - [x] Theme tokens set up (colors, fonts as CSS variables / Tailwind theme,
       not hardcoded)
 - [x] Archivo Black + Inter loaded via Google Fonts
 - [x] Base layout / nav shell, mobile-first breakpoints working
 
 ### Phase 2 — Home page
-- [ ] Hero section built with final copy ("Websites built to win you work")
-- [ ] Page-load hero animation sequence (headline → sub-line → button)
-- [ ] Tap/press feedback on buttons and cards
-- [ ] Smooth page transitions between routes
-- [ ] CTA button wired to Contact page
+- [x] Hero section built with final copy ("Websites built to win you work")
+- [x] Page-load hero animation sequence (headline → sub-line → button)
+- [x] Tap/press feedback on buttons and cards
+- [x] Smooth page transitions between routes
+- [x] CTA button wired to Contact page
 
 ### Phase 3 — About page (resume / credibility)
 - [ ] Personal story / bio copy written (only a short placeholder intro exists)
@@ -87,6 +87,46 @@ enough to actively use for pitching website sales in person and via QR code.
 
 ## Session Log
 *(Most recent first)*
+
+### 2026-07-10 — Phase 2 complete: hero motion, tap feedback, page transitions
+- Home hero: added a page-load animation sequence (headline → sub-line →
+  CTA button, staggered 0/150/300ms fade-slide-up) via a `.hero-reveal` CSS
+  class + `@keyframes hero-in` in `globals.css`, with a
+  `prefers-reduced-motion` fallback that shows content instantly.
+  - Bug caught & fixed: the `animation` shorthand was resetting
+    `animation-delay` back to 0 on every element (shorthand properties reset
+    unspecified sub-properties), silently killing the stagger. Switched to
+    longhand `animation-name`/`-duration`/`-timing-function`/`-fill-mode` so
+    the per-element Tailwind `[animation-delay:...]` utilities apply.
+  - Added the missing CTA button ("Let's build something" → `/contact`)
+    that the copy always called for but didn't exist yet.
+- Tap/press feedback: added `active:scale-95` + visible `focus-visible`
+  rings to the header's About/Work nav links (logo and Contact button
+  already had press feedback from scaffolding).
+- Page transitions: added `src/app/template.tsx` (App Router template file,
+  remounts on every navigation unlike layout.tsx) wrapping route content in
+  a `.page-transition` class — a 0.35s fade-in on every route change, with
+  the same reduced-motion fallback pattern. Header/Footer stay stable since
+  they live in layout.tsx, only the main content fades.
+- Verified: `tsc --noEmit` + lint clean; confirmed in-browser via computed
+  styles that animation-delay values are correct (0s/0.15s/0.3s) after the
+  fix, and that `.page-transition` renders inside `<main>` on every route
+  (/, /about, /work) with no console errors. Couldn't verify the Next.js
+  `Link` click-through directly — the browser tool's ref-based clicks
+  weren't registering navigations this session — but direct URL navigation
+  confirms every route renders correctly.
+- Next up: Phase 3 wrap-up (bio copy, cert images) or Phase 4 (Work page).
+
+### 2026-07-10 — GitHub + Vercel connected, site is live
+- Renamed local branch `master` → `main`, created GitHub repo
+  `GTluke25/portfolio-site`, pushed code.
+- Connected Vercel to the GitHub repo (hit a one-time `gitSource`/`repoId`
+  error from a stale GitHub App permission sync — fixed by re-confirming
+  repo access in GitHub's Vercel App settings). Deploy kicked off
+  successfully.
+- Site now auto-deploys on every push to `main`.
+- Next up: Phase 2 (Home page motion) or finish out Phase 3 (About bio copy,
+  cert images).
 
 ### 2026-07-10 — About page: credential cards wired up
 - Found an untracked `data/resume.ts.ts` file (double extension, wrong
