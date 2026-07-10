@@ -40,14 +40,14 @@ enough to actively use for pitching website sales in person and via QR code.
 - [ ] CTA button wired to Contact page
 
 ### Phase 3 — About page (resume / credibility)
-- [ ] Personal story / bio copy written
-- [ ] Credentials list finalized — title, issuer, date, client-facing
+- [ ] Personal story / bio copy written (only a short placeholder intro exists)
+- [x] Credentials list finalized — title, issuer, date, client-facing
       relevance line for each
 - [ ] Certificate images cropped/redacted of personal info (address, ID
       numbers, signatures)
-- [ ] Credential cards built, touch-friendly (lightbox or flip, with tap
-      equivalent — not hover-only)
-- [ ] Scroll-reveal animation on cards
+- [x] Credential cards built, touch-friendly (lightbox wired up, tap-friendly
+      buttons — lightbox itself untested with a real image since none exist yet)
+- [x] Scroll-reveal animation on cards
 
 ### Phase 4 — Work page (showcase)
 - [ ] Demo/mock contractor site case study built
@@ -87,6 +87,35 @@ enough to actively use for pitching website sales in person and via QR code.
 
 ## Session Log
 *(Most recent first)*
+
+### 2026-07-10 — About page: credential cards wired up
+- Found an untracked `data/resume.ts.ts` file (double extension, wrong
+  location) with education + certification content. Moved it to
+  `src/data/resume.ts` to match project conventions, and added a `relevance`
+  field to `Education`/`Certification` (a client-facing benefit line) plus an
+  optional `certificateImage` field for when real cert photos exist.
+- Wrote the client-facing relevance one-liners for each credential (not in
+  the original data — this is "the persuasive part" CLAUDE.md calls for).
+- Built `ScrollReveal` (IntersectionObserver-based fade/slide-up, respects
+  `prefers-reduced-motion` via Tailwind's `motion-safe`/`motion-reduce`,
+  animates only `transform`/`opacity`), `CredentialCard` (title, issuer,
+  date, relevance line, tap-friendly buttons), `CertificateLightbox` (modal,
+  Esc + click-outside to close), and `CredentialsGrid` (maps data → cards,
+  owns lightbox open state).
+- Rewrote `src/app/about/page.tsx`: heading, short intro paragraph grounded
+  in the resume data (no fabricated personal history — real bio copy is
+  still a TODO), and the credentials grid.
+- "View certificate" only renders when a cert has `certificateImage` set —
+  none do yet (no cropped/redacted images exist), so it correctly doesn't
+  show. The Google cert's "Verify online" link does render and points at its
+  real Coursera verify URL.
+- Verified: `tsc --noEmit` and `npm run lint` clean. Checked in-browser via
+  DOM/computed-style inspection (screenshot tool hung again, same as last
+  session) — 2-col grid at 1280px, 1-col at 375px, cards fully revealed
+  (opacity 1) after scroll-reveal fires, nav/links all correct.
+- Not committed yet — left for the user to review/commit.
+- Next up: real personal story/bio copy, cropped certificate images (then
+  wire `certificateImage` paths in), or move to Phase 2 (Home page motion).
 
 ### 2026-07-10 — Phase 1 foundation built
 - Verified environment (Node v24.18.0, npm 11.16.0, git 2.55) before starting.
