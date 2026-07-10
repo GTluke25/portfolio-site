@@ -62,16 +62,22 @@ enough to actively use for pitching website sales in person and via QR code.
 - [ ] Success / error states handled
 
 ### Phase 6 — Motion polish
-- [ ] All Tier 1 motion (scroll-reveal, hero sequence, tap feedback, page
-      transitions) audited across every page
-- [ ] `prefers-reduced-motion` fallback verified
-- [ ] 1–2 Tier 2 signature accents chosen and implemented (e.g. sticky/
-      shrinking header with Contact always in reach)
+- [x] All Tier 1 motion (scroll-reveal, hero sequence, tap feedback, page
+      transitions) audited across every page — plus a modal fade/scale-in
+      added for the certificate lightbox, which had none before
+- [x] `prefers-reduced-motion` fallback verified (hero, scroll-reveal, page
+      transitions, and the new lightbox animations all checked)
+- [ ] 1–2 Tier 2 signature accents chosen and implemented — note: the sticky
+      header with an always-visible Contact button already effectively
+      covers the "sticky header keeps Contact in reach" candidate; worth
+      confirming that's considered "done" or picking a second accent
 
 ### Phase 7 — Content & business readiness
 - [ ] Domain name chosen and connected
 - [ ] SEO basics: meta tags, OG image, favicon
-- [ ] Accessibility pass: contrast, visible keyboard focus states, alt text
+- [x] Accessibility pass: contrast fixed (header Contact button was failing
+      WCAG AA), focus-visible rings everywhere, 44px touch targets, skip
+      link added. Alt text in place on the (not-yet-populated) lightbox.
 - [ ] Real-device mobile QA (not just browser resize)
 - [ ] Performance check — mobile Lighthouse score
 
@@ -87,6 +93,44 @@ enough to actively use for pitching website sales in person and via QR code.
 
 ## Session Log
 *(Most recent first)*
+
+### 2026-07-10 — UI/UX polish audit and fixes
+- Ran a full UI/UX review (ui-ux-pro-max skill checklist: accessibility,
+  touch/interaction, layout, typography/color, animation, navigation) against
+  every component, since the automated CLI tool needs Python and this
+  machine doesn't have it installed — did the audit manually against the
+  same rule set instead.
+- Found and fixed, worst first:
+  - **Real WCAG contrast failure**: the header's Contact button used
+    light text on the orange accent (~2.45:1, fails AA). The Home page CTA
+    already did this correctly with dark text (~6.8:1) — made the header
+    button match (`src/components/Header.tsx`).
+  - **Touch targets under 44px**: nav links, logo, credential-card action
+    buttons, and the lightbox close button were all shorter than the
+    44px minimum — padded them all up.
+  - **No active-page indicator in the nav** — `Header` is now a client
+    component using `usePathname()` + `aria-current="page"` to highlight
+    the current route.
+  - **z-index collision**: header and lightbox were both `z-50` (worked by
+    DOM-order accident, not design) — gave them a real scale (`z-40` /
+    `z-[100]`).
+  - **`cursor-pointer` missing** on `<button>` elements (native buttons
+    don't get pointer cursor by default) — added.
+  - **No focus ring on the lightbox close button** — added, matching every
+    other interactive element on the site.
+  - **Lightbox had no entrance animation** — it was the one place on the
+    site that just snapped into existence. Added a 200ms fade (backdrop) +
+    fade/scale-in (content), both respecting `prefers-reduced-motion`.
+  - **No skip-to-content link** — added one in `src/app/layout.tsx`.
+- Verified: `tsc --noEmit` + lint clean; confirmed live in-browser that
+  touch targets measure exactly 44px, `aria-current` sets correctly on the
+  active route, the Contact button's computed color/background now gives
+  the corrected contrast ratio, and the reduced-motion CSS rules exist for
+  the two new lightbox keyframes.
+- Committed (`ee6b1da`) and pushed to `main` — Vercel auto-deploys from here.
+- Next up: Phase 3 wrap-up (real bio copy, cropped certificate images) or
+  Phase 4 (Work page). The Tier 2 motion accent (sticky header w/ Contact)
+  may already be effectively satisfied — worth a decision next session.
 
 ### 2026-07-10 — Phase 2 complete: hero motion, tap feedback, page transitions
 - Home hero: added a page-load animation sequence (headline → sub-line →
