@@ -111,8 +111,9 @@ enough to actively use for pitching website sales in person and via QR code.
   no console/server errors, confirmed via DOM inspection (not screenshot —
   the browser screenshot tool hung/timed out this session) at both desktop
   (1280x720) and mobile (375x812) viewports.
-- Nothing committed to git yet as of end of this session — working tree has
-  the full scaffold staged and ready.
+- Committed the full scaffold as the initial commit (root-commit c08714a).
+  Set local (repo-only) git identity to Luke Nitzschke /
+  lukenitzschke@gmail.com to do so.
 - Next up: Phase 2 (hero animation sequence, tap feedback, page transitions,
   CTA wiring) — or connect Vercel first to get auto-deploy going.
 
